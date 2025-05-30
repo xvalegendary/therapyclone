@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
       id: productId,
       name,
       description,
-      priceUSD: Math.round(Number.parseFloat(price_usd.toString()) * 100), // Convert to cents
-      priceRUB: Math.round(Number.parseFloat(price_rub.toString()) * 100), // Convert to kopecks
+      priceUSD: Math.round(Number.parseFloat(price_usd.toString()) * 100), 
+      priceRUB: Math.round(Number.parseFloat(price_rub.toString()) * 100), 
       image1: image || "/placeholder.svg?height=400&width=400",
       image2: null,
       category: category || "regular",

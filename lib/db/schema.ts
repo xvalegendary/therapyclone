@@ -71,3 +71,10 @@ export const promoUsage = sqliteTable('promo_usage', {
 	orderId: text('order_id').notNull(),
 	usedAt: text('used_at').notNull(),
 })
+
+export const userFavorites = sqliteTable('user_favorites', {
+  id: text('id').primaryKey(),
+  user_id: text('user_id').notNull(),
+  product_id: text('product_id').notNull(),
+  created_at: text('created_at').notNull(),
+})

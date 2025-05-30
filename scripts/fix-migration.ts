@@ -12,7 +12,7 @@ async function fixMigration() {
 	try {
 		console.log('🔧 Fixing database migration...')
 
-		// Проверяем, существует ли колонка username
+		
 		const tableInfo = await db.all(sql`PRAGMA table_info(users)`)
 		const hasUsername = tableInfo.some((col: any) => col.name === 'username')
 
@@ -23,13 +23,13 @@ async function fixMigration() {
 				sql`UPDATE users SET username = LOWER(REPLACE(name, ' ', '_')) || '_' || SUBSTR(id, 1, 4) WHERE username = '' OR username IS NULL`
 			)
 
-			// Создаем уникальный индекс после заполнения данных
+		
 			await db.run(
 				sql`CREATE UNIQUE INDEX IF NOT EXISTS users_username_unique ON users(username)`
 			)
 		}
 
-		// Проверяем колонку isVerified
+		
 		const hasIsVerified = tableInfo.some(
 			(col: any) => col.name === 'is_verified'
 		)
@@ -40,7 +40,7 @@ async function fixMigration() {
 			)
 		}
 
-		// Создаем таблицу verification_codes если её нет
+		
 		console.log('📧 Creating verification_codes table...')
 		await db.run(sql`
       CREATE TABLE IF NOT EXISTS verification_codes (
@@ -54,7 +54,7 @@ async function fixMigration() {
       )
     `)
 
-		// Создаем таблицу promo_codes если её нет
+		
 		console.log('🎫 Creating promo_codes table...')
 		await db.run(sql`
       CREATE TABLE IF NOT EXISTS promo_codes (

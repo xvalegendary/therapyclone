@@ -6,13 +6,13 @@ import { orders, orderItems, products } from "@/lib/db/schema"
 import { eq } from "drizzle-orm"
 import { v4 as uuidv4 } from "uuid"
 
-// Интерфейс для элемента корзины
+
 interface CartItem {
   id: string
   quantity: number
 }
 
-// Получение корзины из куки
+
 async function getCart(): Promise<CartItem[]> {
   try {
     const cartCookie = cookies().get("cart")?.value
@@ -23,12 +23,12 @@ async function getCart(): Promise<CartItem[]> {
   }
 }
 
-// Очистка корзины
+
 async function clearCart() {
   cookies().set({
     name: "cart",
     value: "[]",
-    maxAge: 60 * 60 * 24 * 7, // 1 неделя
+    maxAge: 60 * 60 * 24 * 7, 
     path: "/",
   })
 }
@@ -37,36 +37,36 @@ export async function POST(request: Request) {
   try {
     const { shippingAddress } = await request.json()
 
-    // Получаем токен из куки
+
     const cookieToken = cookies().get("auth_token")?.value
 
     if (!cookieToken) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    // Получаем пользователя по токену
+  
     const user = await getUserByToken(cookieToken)
 
     if (!user) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 })
     }
 
-    // Получаем корзину
+  
     const cartItems = await getCart()
 
     if (cartItems.length === 0) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 })
     }
 
-    // Получаем информацию о продуктах из корзины
+   
     const productIds = cartItems.map((item) => item.id)
-    const productsData = await db.select().from(products).where(eq(products.id, productIds[0])) // Здесь нужно использовать оператор in, но для простоты берем только первый продукт
+    const productsData = await db.select().from(products).where(eq(products.id, productIds[0])) 
 
     if (productsData.length === 0) {
       return NextResponse.json({ error: "Products not found" }, { status: 400 })
     }
 
-    // Рассчитываем общую сумму заказа
+ 
     let totalAmount = 0
     for (const item of cartItems) {
       const product = productsData.find((p) => p.id === item.id)
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // Создаем заказ
+   
     const orderId = uuidv4()
     await db.insert(orders).values({
       id: orderId,
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
       createdAt: new Date().toISOString(),
     })
 
-    // Создаем элементы заказа
+    
     for (const item of cartItems) {
       const product = productsData.find((p) => p.id === item.id)
       if (product) {
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // Очищаем корзину
+
     await clearCart()
 
     return NextResponse.json({

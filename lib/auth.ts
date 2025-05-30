@@ -13,7 +13,7 @@ if (!JWT_SECRET) {
   console.warn("JWT_SECRET not set, using default secret. This is not secure for production!")
 }
 
-// Простая функция для создания токена (без внешних зависимостей)
+
 function createSimpleToken(payload: any): string {
   const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }))
   const payloadStr = btoa(JSON.stringify({ ...payload, exp: Date.now() + 24 * 60 * 60 * 1000 }))
@@ -21,11 +21,9 @@ function createSimpleToken(payload: any): string {
   return `${header}.${payloadStr}.${signature}`
 }
 
-// Простая функция для проверки пароля
+
 function verifyPassword(password: string, hash: string): boolean {
-  // Для демо используем простое сравнение
-  // В продакшене нужно использовать bcrypt
-  return password === hash || hash.startsWith("$2") // bcrypt hash starts with $2
+  return password === hash || hash.startsWith("$2") 
 }
 
 export async function encrypt(payload: any) {
@@ -53,7 +51,7 @@ export async function loginUser(email: string, passwordPlain: string) {
   try {
     console.log("loginUser: Starting login for", email)
 
-    // Найти пользователя по email
+   
     const userResults = await db.select().from(users).where(eq(users.email, email)).limit(1)
 
     console.log("loginUser: Found users:", userResults.length)
@@ -65,7 +63,7 @@ export async function loginUser(email: string, passwordPlain: string) {
     const user = userResults[0]
     console.log("loginUser: User found with role:", user.role)
 
-    // Простая проверка пароля для демо
+ 
     const isValidPassword = passwordPlain === "admin1234" || passwordPlain === "password123"
 
     if (!isValidPassword) {
@@ -107,7 +105,7 @@ export async function register(formData: FormData) {
       return { success: false, error: "Missing required fields" }
     }
 
-    // Проверяем, существует ли пользователь
+  
     const existingUserResults = await db.select().from(users).where(eq(users.email, email)).limit(1)
 
     if (existingUserResults.length > 0) {
@@ -117,7 +115,7 @@ export async function register(formData: FormData) {
     const userId = uuidv4()
     const referralCode = uuidv4().substring(0, 8).toUpperCase()
 
-    // Создаем нового пользователя
+   
     const hashedPassword = await bcrypt.hash(passwordPlain, 10)
 
     await db.insert(users).values({
@@ -125,11 +123,11 @@ export async function register(formData: FormData) {
       email,
       password: hashedPassword,
       name,
-      role: "user", // По умолчанию роль user
+      role: "user",
       referralCode,
     })
 
-    // Создаем JWT токен
+   
     const token = jwt.sign(
       {
         userId: userId,
@@ -187,7 +185,7 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url))
     }
 
-    // Обновляем срок действия токена
+  
     const newToken = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" })
 
     const response = NextResponse.next()
@@ -196,7 +194,7 @@ export async function updateSession(request: NextRequest) {
       value: newToken,
       httpOnly: true,
       path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7, 
     })
 
     return response
@@ -216,7 +214,7 @@ export async function getUserByToken(token: string) {
 
     const email = payload.email as string
 
-    // Ищем пользователя по email
+    
     const userResults = await db.select().from(users).where(eq(users.email, email)).limit(1)
     const user = userResults[0]
 
@@ -236,7 +234,7 @@ export async function getUserByToken(token: string) {
 
 export async function changePassword(userId: string, currentPasswordPlain: string, newPasswordPlain: string) {
   try {
-    // Ищем пользователя по id
+  
     const userResults = await db.select().from(users).where(eq(users.id, userId)).limit(1)
     const user = userResults[0]
 
@@ -244,17 +242,17 @@ export async function changePassword(userId: string, currentPasswordPlain: strin
       return { success: false, error: "User not found" }
     }
 
-    // Проверяем текущий пароль
+  
     const passwordMatch = await bcrypt.compare(currentPasswordPlain, user.password)
 
     if (!passwordMatch) {
       return { success: false, error: "Invalid current password" }
     }
 
-    // Хешируем новый пароль
+    
     const hashedPassword = await bcrypt.hash(newPasswordPlain, 10)
 
-    // Обновляем пароль пользователя
+
     await db.update(users).set({ password: hashedPassword }).where(eq(users.id, userId))
 
     return { success: true }

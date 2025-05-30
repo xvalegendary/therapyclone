@@ -12,13 +12,13 @@ async function seedDatabase() {
 	try {
 		console.log('🌱 Seeding database...')
 
-		// Очищаем существующие данные
+		
 		console.log('🧹 Clearing existing data...')
 		await db.delete(promoCodes)
 		await db.delete(products)
 		await db.delete(users)
 
-		// Создаем админа
+		
 		console.log('👤 Creating admin user...')
 		const adminPassword = await bcrypt.hash('admin1234', 10)
 		await db.insert(users).values({
@@ -32,7 +32,7 @@ async function seedDatabase() {
 			createdAt: new Date(),
 		})
 
-		// Создаем тестового пользователя
+		
 		console.log('👤 Creating test user...')
 		const userPassword = await bcrypt.hash('password123', 10)
 		await db.insert(users).values({
@@ -46,7 +46,7 @@ async function seedDatabase() {
 			createdAt: new Date(),
 		})
 
-		// Добавляем худи
+		
 		console.log('👕 Adding hoodies...')
 		const hoodies = [
 			{
@@ -130,7 +130,7 @@ async function seedDatabase() {
 			},
 		]
 
-		// Добавляем футболки
+		
 		console.log('👔 Adding t-shirts...')
 		const tshirts = [
 			{
@@ -174,7 +174,7 @@ async function seedDatabase() {
 			},
 		]
 
-		// Добавляем штаны
+		
 		console.log('👖 Adding pants...')
 		const pants = [
 			{
@@ -218,7 +218,7 @@ async function seedDatabase() {
 			},
 		]
 
-		// Добавляем обувь
+		
 		console.log('👟 Adding shoes...')
 		const shoes = [
 			{
@@ -249,7 +249,7 @@ async function seedDatabase() {
 			},
 		]
 
-		// Добавляем аксессуары
+		
 		console.log('🎒 Adding accessories...')
 		const accessories = [
 			{
@@ -293,7 +293,7 @@ async function seedDatabase() {
 			},
 		]
 
-		// Вставляем все товары
+		
 		const allProducts = [
 			...hoodies,
 			...tshirts,
@@ -303,7 +303,7 @@ async function seedDatabase() {
 		]
 		await db.insert(products).values(allProducts)
 
-		// Добавляем промокоды
+		
 		console.log('🎫 Adding promo codes...')
 		const promos = [
 			{

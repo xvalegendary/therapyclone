@@ -2,7 +2,7 @@ export type Language = "en" | "ru"
 
 export const translations = {
   en: {
-    // Navigation
+    
     nav: {
       home: "Home",
       shop: "Shop",
@@ -16,14 +16,14 @@ export const translations = {
       allProducts: "All Products",
     },
 
-    // Search
+    
     search: {
       placeholder: "Search products...",
       noResults: "No products found",
       results: "Search Results",
     },
 
-    // Banner
+  
     banner: {
       title: "Premium hoodies for",
       subtitle: "modern lifestyle",
@@ -32,7 +32,7 @@ export const translations = {
       learnMore: "Learn More",
     },
 
-    // Products
+ 
     addToCart: "Add to Cart",
     addToFavorites: "Add to Favorites",
     removeFromFavorites: "Remove from Favorites",
