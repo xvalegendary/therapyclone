@@ -6,7 +6,7 @@ const config: Config = {
   driver: 'pglite',
   dialect: 'postgresql',
   dbCredentials: {
-    url: 'file:sqlite.db',
+    url: 'file:hoodie-store.db',
   },
 };
 
