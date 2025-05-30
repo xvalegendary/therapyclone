@@ -1,15 +1,15 @@
 import nodemailer from "nodemailer"
 
-// Конфигурация SMTP
-const transporter = nodemailer.createTransporter({
-  host: process.env.SMTP_HOST || "smtp.gmail.com",
-  port: Number.parseInt(process.env.SMTP_PORT || "587"),
-  secure: false, // true для 465, false для других портов
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-})
+
+const transporter = nodemailer.createTransport({
+	host: process.env.SMTP_HOST || 'smtp.gmail.com',
+	port: Number.parseInt(process.env.SMTP_PORT || '587'),
+	secure: false, 
+	auth: {
+		user: process.env.SMTP_USER,
+		pass: process.env.SMTP_PASS,
+	},
+});
 
 export async function sendVerificationEmail(email: string, code: string, username: string) {
   const htmlTemplate = `
