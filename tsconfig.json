@@ -1,3 +1,4 @@
+/* eslint-disable */
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
