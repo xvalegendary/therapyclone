@@ -23,7 +23,7 @@ export function Navbar() {
   const { t } = useLanguage()
   const router = useRouter()
 
-  // Track scroll position for animations
+
   useEffect(() => {
     const handleScroll = () => {
       setScrollPosition(window.scrollY)
@@ -59,7 +59,7 @@ export function Navbar() {
               <span className="text-xl font-bold hidden sm:block">SDFM 2520</span>
             </Link>
 
-            {/* Center - Search */}
+           
             <div className="flex-1 max-w-md mx-8 hidden md:block">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -83,13 +83,12 @@ export function Navbar() {
                 <Search className="h-5 w-5" />
               </motion.button>
 
-              {/* Language Selector */}
+        
               <LanguageSelector />
 
-              {/* Theme Toggle */}
               <ThemeToggle />
 
-              {/* GitHub */}
+            
               <motion.a
                 href="https://github.com"
                 target="_blank"
@@ -101,7 +100,7 @@ export function Navbar() {
                 <Github className="h-5 w-5" />
               </motion.a>
 
-              {/* Favorites */}
+            
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -121,7 +120,7 @@ export function Navbar() {
                 )}
               </motion.button>
 
-              {/* User Account */}
+          
               {user ? (
                 <div className="flex items-center space-x-2">
                   <UserAvatar user={user} size="sm" />

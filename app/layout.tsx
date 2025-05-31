@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   description: "therapy for you",
 }
 
+console.warn('[~] T2T2RSTAN PROTECTION ENABLED')
+console.warn('[+] SHAYTAN MASHINA PROTECTION STATE 2 LOADED')
+
 export default function RootLayout({
   children,
 }: {

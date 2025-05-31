@@ -4,7 +4,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
   try {
     const productId = params.id
 
-    // В нашей имитации просто возвращаем фиктивный продукт
+   
     const product = {
       id: productId,
       name: "SDFM Classic Black",

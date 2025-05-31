@@ -18,13 +18,13 @@ export function PromoBanner() {
     const marqueeElement = marqueeRef.current
     if (!marqueeElement) return
 
-    // Clone the content to create a seamless loop
+    
     const content = marqueeElement.innerHTML
     marqueeElement.innerHTML = content + content
 
-    // Start the animation
+   
     const animation = marqueeElement.animate([{ transform: "translateX(0)" }, { transform: `translateX(-50%)` }], {
-      duration: 40000, // 40 seconds for one full cycle
+      duration: 20000, 
       iterations: Number.POSITIVE_INFINITY,
     })
 
@@ -34,10 +34,10 @@ export function PromoBanner() {
   }, [language])
 
   return (
-    <div className="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white py-2 overflow-hidden whitespace-nowrap relative">
+    <div className="w-full  py-2 overflow-hidden whitespace-nowrap relative">
       <div ref={marqueeRef} className="inline-block animate-marquee">
         {promoText[language]} {promoText[language]}
       </div>
     </div>
   )
-}
+

@@ -3,10 +3,9 @@ import type { Config } from 'drizzle-kit'
 const config: Config = {
   schema: './lib/db/schema.ts',
   out: './drizzle',
-  driver: 'pglite',
-  dialect: 'postgresql',
+  dialect: 'sqlite',
   dbCredentials: {
-    url: 'file:hoodie-store.db',
+    url: 'file:./sqlite.db',
   },
 };
 

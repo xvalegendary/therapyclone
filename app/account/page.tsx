@@ -25,10 +25,10 @@ export default function AccountPage() {
   })
 
   useEffect(() => {
-    // Check if user is logged in
+    
     const token = localStorage.getItem("token")
     if (token) {
-      // Fetch user data
+    
       fetchUserData(token)
     }
   }, [])
@@ -139,7 +139,7 @@ export default function AccountPage() {
                   </div>
                   <div>
                     <label className="text-sm font-medium">Member Since</label>
-                    <p className="text-lg">January 2024</p>
+                    <p className="text-lg">May 2025</p>
                   </div>
                 </div>
               </CardContent>

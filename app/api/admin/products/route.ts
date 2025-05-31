@@ -5,9 +5,7 @@ import { v4 as uuidv4 } from "uuid"
 
 export async function GET() {
   try {
-    console.log("Fetching products...")
     const allProducts = await db.select().from(products)
-    console.log("Products fetched:", allProducts.length)
     return NextResponse.json({ products: allProducts })
   } catch (error) {
     console.error("Error fetching products:", error)
@@ -17,48 +15,51 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("Creating new product...")
     const body = await request.json()
-    console.log("Request body:", body)
-
     const { name, description, price_usd, price_rub, image, category, in_stock } = body
 
-    if (!name || !description || price_usd === undefined || price_rub === undefined) {
-      console.log("Missing required fields:", { name, description, price_usd, price_rub })
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    
+    if (!name || price_usd === undefined || price_rub === undefined) {
+      return NextResponse.json(
+        { error: "Missing required fields (name, price_usd, price_rub)" },
+        { status: 400 }
+      )
     }
 
-    const productId = uuidv4()
-    console.log("Generated product ID:", productId)
+  
+    const priceUSD = Math.round(Number(price_usd) * 100)
+    const priceRUB = Math.round(Number(price_rub) * 100)
 
     const productData = {
-      id: productId,
+      id: uuidv4(),
       name,
-      description,
-      priceUSD: Math.round(Number.parseFloat(price_usd.toString()) * 100), 
-      priceRUB: Math.round(Number.parseFloat(price_rub.toString()) * 100), 
-      image1: image || "/placeholder.svg?height=400&width=400",
-      image2: null,
+      description: description || null,
+      price: priceRUB, 
+      price_usd: priceUSD,
+      price_rub: priceRUB,
+      image: image || null,
       category: category || "regular",
-      featured: false,
-      inStock: in_stock !== false,
-      createdAt: new Date().toISOString(),
+      in_stock: in_stock !== false,
+      created_at: new Date().toISOString()
     }
-
-    console.log("Inserting product data:", productData)
 
     await db.insert(products).values(productData)
 
-    console.log("Product created successfully")
-    return NextResponse.json({ success: true, id: productId })
+    return NextResponse.json({ 
+      success: true, 
+      product: {
+        id: productData.id,
+        name: productData.name,
+        price: productData.price / 100,
+        price_usd: productData.price_usd / 100,
+        price_rub: productData.price_rub / 100
+      }
+    })
   } catch (error) {
     console.error("Error creating product:", error)
     return NextResponse.json(
-      {
-        error: "Failed to create product",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 },
+      { error: "Failed to create product", details: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 }
     )
   }
 }

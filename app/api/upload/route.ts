@@ -9,8 +9,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 })
     }
 
-    // В реальном проекте здесь бы была загрузка в облачное хранилище
-    // Для демо возвращаем placeholder URL
+  
     const mockUrl = `/placeholder.svg?height=400&width=400&text=${encodeURIComponent(file.name)}`
 
     return NextResponse.json({ url: mockUrl })

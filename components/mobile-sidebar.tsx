@@ -51,14 +51,7 @@ export function MobileSidebar() {
 
   return (
     <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed top-4 left-4 z-50 p-2 rounded-full shadow-lg transition-all duration-300 ${
-          theme === "dark" ? "bg-dark-800 hover:bg-dark-700 text-white" : "bg-gray-200 hover:bg-gray-300 text-gray-900"
-        }`}
-      >
-        <Menu className="h-5 w-5" />
-      </button>
+      
 
       <AnimatePresence>
         {isOpen && (

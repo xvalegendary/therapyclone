@@ -4,7 +4,7 @@ import * as schema from "./db/schema"
 
 
 const client = createClient({
-  url: "file:hoodie-store.db",
+  url: "file:sqlite.db",
 })
 
 

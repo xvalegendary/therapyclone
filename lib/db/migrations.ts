@@ -4,7 +4,7 @@ import { createClient } from "@libsql/client"
 
 async function runMigrations() {
   const client = createClient({
-    url: "file:hoodie-store.db",
+    url: "file:sqlite.db",
   })
 
   const db = drizzle(client)
