@@ -40,4 +40,4 @@ export function PromoBanner() {
       </div>
     </div>
   )
-
+}
